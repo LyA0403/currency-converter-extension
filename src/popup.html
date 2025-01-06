@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 10px;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    select, input {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+      height: 30px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: white;
+    }
+    select {
+      cursor: pointer;
+    }
+    select:hover {
+      border-color: #999;
+    }
+    option {
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-group">
+    <label for="fromCurrency">從:</label>
+    <select id="fromCurrency">
+      <option value="USD">美元 (USD)</option>
+      <option value="TWD">新台幣 (TWD)</option>
+      <option value="EUR">歐元 (EUR)</option>
+      <option value="JPY">日圓 (JPY)</option>
+      <option value="CNY">人民幣 (CNY)</option>
+      <option value="GBP">英鎊 (GBP)</option>
+      <option value="AUD">澳幣 (AUD)</option>
+      <option value="CAD">加拿大幣 (CAD)</option>
+      <option value="CHF">瑞士法郎 (CHF)</option>
+      <option value="HKD">港幣 (HKD)</option>
+      <option value="KRW">韓元 (KRW)</option>
+      <option value="SGD">新加坡幣 (SGD)</option>
+      <option value="THB">泰銖 (THB)</option>
+      <option value="MYR">馬來西亞令吉 (MYR)</option>
+      <option value="IDR">印尼盾 (IDR)</option>
+      <option value="PHP">菲律賓披索 (PHP)</option>
+      <option value="INR">印度盧比 (INR)</option>
+      <option value="NZD">紐西蘭幣 (NZD)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="toCurrency">轉換至:</label>
+    <select id="toCurrency">
+      <option value="TWD">新台幣 (TWD)</option>
+      <option value="USD">美元 (USD)</option>
+      <option value="EUR">歐元 (EUR)</option>
+      <option value="JPY">日圓 (JPY)</option>
+      <option value="CNY">人民幣 (CNY)</option>
+      <option value="GBP">英鎊 (GBP)</option>
+      <option value="AUD">澳幣 (AUD)</option>
+      <option value="CAD">加拿大幣 (CAD)</option>
+      <option value="CHF">瑞士法郎 (CHF)</option>
+      <option value="HKD">港幣 (HKD)</option>
+      <option value="KRW">韓元 (KRW)</option>
+      <option value="SGD">新加坡幣 (SGD)</option>
+      <option value="THB">泰銖 (THB)</option>
+      <option value="MYR">馬來西亞令吉 (MYR)</option>
+      <option value="IDR">印尼盾 (IDR)</option>
+      <option value="PHP">菲律賓披索 (PHP)</option>
+      <option value="INR">印度盧比 (INR)</option>
+      <option value="NZD">紐西蘭幣 (NZD)</option>
+    </select>
+  </div>
+  <button id="save">儲存設定</button>
+  <script src="popup.js"></script>
+</body>
+</html> 

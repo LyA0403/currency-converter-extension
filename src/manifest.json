@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "匯率轉換工具",
+  "version": "1.0",
+  "description": "快速轉換匯率的Chrome插件",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "contextMenus",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://api.exchangerate-api.com/*",
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "commands": {
+    "convert-selection": {
+      "suggested_key": {
+        "default": "Alt+V",
+        "mac": "Command+Shift+C"
+      },
+      "description": "轉換選取的數字"
+    }
+  }
+} 
