@@ -10,6 +10,7 @@ A Chrome extension for quick currency conversion.
 - Keyboard shortcut support (Alt+V, Command+Shift+C for Mac)
 - Support for M (Million)/B (Billion)/T (Trillion) units
 - Automatic Chinese numeral conversion
+- Optional Chinese numeral display
 - Dark mode support
 - Exchange rate data caching
 
@@ -23,7 +24,8 @@ A Chrome extension for quick currency conversion.
 
 ## Usage
 1. Click the extension icon to set default currency pair (e.g., USD to TWD)
-2. After setting up, you can:
+2. Choose whether to display Chinese numerals (e.g., 一百萬, 十億)
+3. After setting up, you can:
    - Select any number on a webpage (supports regular numbers and M/B/T units)
    - Right-click and select "Convert Currency"
    - Or use the keyboard shortcut Alt+V (Command+Shift+C for Mac)

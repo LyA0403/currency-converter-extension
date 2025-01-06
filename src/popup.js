@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
   // 載入儲存的設定
-  chrome.storage.sync.get(['fromCurrency', 'toCurrency'], function(data) {
+  chrome.storage.sync.get(['fromCurrency', 'toCurrency', 'showChinese'], function(data) {
     if (data.fromCurrency) {
       document.getElementById('fromCurrency').value = data.fromCurrency;
       updateLastUpdateTime(data.fromCurrency);
     }
     if (data.toCurrency) {
       document.getElementById('toCurrency').value = data.toCurrency;
+    }
+    if (data.showChinese !== undefined) {
+      document.getElementById('showChinese').checked = data.showChinese;
     }
   });
 
@@ -28,10 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('save').addEventListener('click', function() {
     const fromCurrency = document.getElementById('fromCurrency').value;
     const toCurrency = document.getElementById('toCurrency').value;
+    const showChinese = document.getElementById('showChinese').checked;
 
     chrome.storage.sync.set({
       fromCurrency: fromCurrency,
-      toCurrency: toCurrency
+      toCurrency: toCurrency,
+      showChinese: showChinese
     }, function() {
       alert('設定已儲存！');
       updateLastUpdateTime(fromCurrency);

@@ -58,13 +58,25 @@ function numberToChinese(num) {
     if (parseFloat('0.' + decimalStr) === 0) {
       return '';
     }
+    // 數字對應表
+    const numberMap = {
+      '0': '零',
+      '1': '一',
+      '2': '二',
+      '3': '三',
+      '4': '四',
+      '5': '五',
+      '6': '六',
+      '7': '七',
+      '8': '八',
+      '9': '九'
+    };
+    
     for (let i = 0; i < decimalStr.length; i++) {
-      const digit = parseInt(decimalStr[i]);
-      if (digit !== 0) {
-        result += digits[digit];
-      }
+      // 直接使用對應表轉換每個數字，包括 0
+      result += numberMap[decimalStr[i]];
     }
-    return result ? `「點」${result}` : '';  // 使用特殊符號包住"點"字
+    return result ? `「點」${result}` : '';
   }
   
   // 處理小於 10000 的數字
@@ -255,7 +267,7 @@ async function handleConversion(selectedText, tab, x, y) {
   const { value: number, hasMB } = parseNumber(selectedText);
 
   if (!isNaN(number)) {
-    chrome.storage.sync.get(['fromCurrency', 'toCurrency'], async function(data) {
+    chrome.storage.sync.get(['fromCurrency', 'toCurrency', 'showChinese'], async function(data) {
       // 檢查是否有設定貨幣
       if (!data.fromCurrency || !data.toCurrency) {
         chrome.tabs.sendMessage(tab.id, {
@@ -281,8 +293,8 @@ async function handleConversion(selectedText, tab, x, y) {
                     `───────────────\n` +
                     `${originalFormatted.short} ${data.fromCurrency} = ${convertedFormatted.short} ${data.toCurrency}\n` +
                     (hasMB ? `(${originalFormatted.full} = ${convertedFormatted.full})\n` : '') +
-                    (originalFormatted.chinese ? `${data.fromCurrency}: ${originalFormatted.chinese}\n` : '') +
-                    (convertedFormatted.chinese ? `${data.toCurrency}: ${convertedFormatted.chinese}` : '');
+                    (data.showChinese && originalFormatted.chinese ? `${data.fromCurrency}: ${originalFormatted.chinese}\n` : '') +
+                    (data.showChinese && convertedFormatted.chinese ? `${data.toCurrency}: ${convertedFormatted.chinese}` : '');
         
         chrome.tabs.sendMessage(tab.id, {
           type: 'showResult',
@@ -294,7 +306,9 @@ async function handleConversion(selectedText, tab, x, y) {
         console.error('獲取匯率失敗:', error);
         chrome.tabs.sendMessage(tab.id, {
           type: 'showError',
-          text: `無法獲取匯率，請稍後再試\n可能原因：\n1. 網路連線問題\n2. API 服務暫時無法使用\n3. 選擇的貨幣不支援`,
+          text: `無法獲取匯率，請稍後再試\n可能原因：\n` +
+              `1. 網路連線問題\n2. API 服務暫時無法使用\n3. 選擇的貨幣不支援\n` +
+              `4. 請檢查是否已儲存設定\n5. 嘗試重新整理匯率`,
           mouseX: x,
           mouseY: y
         });

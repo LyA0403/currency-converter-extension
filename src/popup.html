@@ -97,6 +97,18 @@
       <option value="NZD">紐西蘭幣 (NZD)</option>
     </select>
   </div>
+  <div class="form-group" style="
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  ">
+    <input type="checkbox" id="showChinese" style="
+      width: auto;
+      margin-right: 8px;
+      height: auto;
+    ">
+    <label for="showChinese">顯示中文數字單位</label>
+  </div>
   <div class="button-group">
     <button id="save">儲存設定</button>
     <button id="refresh">重新整理匯率</button>
@@ -110,6 +122,10 @@
   ">
     <p>匯率數據來源：ExchangeRate-API</p>
     <p>上次更新時間：<span id="lastUpdate">載入中...</span></p>
+    <p style="margin-top: 8px; font-size: 11px;">
+      提示：設定完成後，可以在網頁上選取數字，
+      使用右鍵選單或快捷鍵 Alt+V 進行轉換
+    </p>
   </div>
   <script src="popup.js"></script>
 </body>

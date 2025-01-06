@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "匯率轉換工具",
   "version": "1.0",
-  "description": "快速轉換匯率的Chrome插件",
+  "description": "快速轉換匯率的Chrome插件，支援中文數字顯示及M/B/T單位轉換",
   "permissions": [
     "storage",
     "activeTab",
