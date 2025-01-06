@@ -17,7 +17,7 @@
 3. 開啟 Chrome 瀏覽器，輸入 `chrome://extensions/`
 4. 開啟右上角的「開發人員模式」
 5. 點擊「載入未封裝項目」
-6. 選擇解壓縮後的 `src` 資料夾
+6. 選擇解壓縮後的 `currency-converter-extension` 資料夾
 
 ## 使用方法
 1. 在網頁上選取數字（支援一般數字和 M/B/T 單位）
