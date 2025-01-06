@@ -292,9 +292,11 @@ async function handleConversion(selectedText, tab, x, y) {
 
 // 監聽快捷鍵
 chrome.commands.onCommand.addListener(async (command) => {
+  console.log('快捷鍵被觸發:', command);  // 添加調試日誌
   if (command === 'convert-selection') {
     // 獲取當前標籤頁
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    console.log('當前標籤頁:', tab);  // 添加調試日誌
     
     // 執行腳本獲取選取的文字
     try {
@@ -302,6 +304,7 @@ chrome.commands.onCommand.addListener(async (command) => {
         target: { tabId: tab.id },
         function: () => {
           const selection = window.getSelection();
+          console.log('選取的文字:', selection.toString().trim());  // 添加調試日誌
           return selection.toString().trim();
         }
       });
