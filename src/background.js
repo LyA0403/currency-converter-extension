@@ -202,7 +202,7 @@ function formatRate(rate) {
 const rateCache = {
   data: {},
   timestamp: {},
-  CACHE_DURATION: 5 * 60 * 1000  // 5分鐘緩存
+  CACHE_DURATION: 6 * 60 * 60 * 1000  // 6小時緩存
 };
 
 // 獲取匯率數據（帶緩存）
@@ -217,18 +217,37 @@ async function getExchangeRate(fromCurrency) {
   }
   
   // 獲取新數據
-  try {
-    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
-    const data = await response.json();
-    
-    // 更新緩存
-    rateCache.data[fromCurrency] = data;
-    rateCache.timestamp[fromCurrency] = now;
-    
-    return data;
-  } catch (error) {
-    throw new Error('獲取匯率失敗');
+  const MAX_RETRIES = 3;
+  let retryCount = 0;
+  
+  async function tryFetch() {
+    try {
+      const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
+      const data = await response.json();
+      
+      if (!data.rates) {
+        throw new Error('獲取匯率失敗');
+      }
+      
+      // 更新緩存
+      rateCache.data[fromCurrency] = {
+        rates: data.rates,
+        timestamp: Date.now()  // 使用當前時間
+      };
+      rateCache.timestamp[fromCurrency] = now;
+      
+      return rateCache.data[fromCurrency];
+    } catch (error) {
+      if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+        return tryFetch();
+      }
+      throw error;
+    }
   }
+  
+  return tryFetch();
 }
 
 // 處理數字轉換
@@ -251,7 +270,8 @@ async function handleConversion(selectedText, tab, x, y) {
       try {
         const rateData = await getExchangeRate(data.fromCurrency);
         const rate = rateData.rates[data.toCurrency];
-        // 使用 Math.round 來避免精度問題
+        const lastUpdated = new Date(rateData.timestamp * 1000);
+        
         const convertedAmount = Math.round(number * rate * 100) / 100;
         
         const baseRate = formatRate(rate);
@@ -274,7 +294,7 @@ async function handleConversion(selectedText, tab, x, y) {
         console.error('獲取匯率失敗:', error);
         chrome.tabs.sendMessage(tab.id, {
           type: 'showError',
-          text: '無法獲取匯率，請稍後再試',
+          text: `無法獲取匯率，請稍後再試\n可能原因：\n1. 網路連線問題\n2. API 服務暫時無法使用\n3. 選擇的貨幣不支援`,
           mouseX: x,
           mouseY: y
         });
@@ -340,5 +360,14 @@ chrome.commands.onCommand.addListener(async (command) => {
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "convertCurrency") {
     handleConversion(info.selectionText, tab, info.x, info.y);
+  }
+});
+
+// 監聽來自 popup 的消息
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'clearCache') {
+    // 清除緩存
+    rateCache.data = {};
+    rateCache.timestamp = {};
   }
 }); 
